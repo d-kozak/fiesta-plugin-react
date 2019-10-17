@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import {CssBaseline, withStyles, WithStyles} from "@material-ui/core";
+import UserInfoComponent from "./UserInfo";
+import LoginComponent from "./LoginComponent";
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const styles = {};
+
+export interface UserInfo {
+
 }
 
-export default App;
+const App = (props: WithStyles<typeof styles>) => {
+    const {classes} = props;
+    const [userInfo, setUserInfo] = useState<UserInfo | null>();
+
+    const handleLogin = (login: string, password: string) => {
+        setUserInfo("foo")
+    };
+
+    return <div>
+        <CssBaseline/>
+        {userInfo ? <UserInfoComponent userInfo={userInfo}/> : <LoginComponent handleLogin={handleLogin}/>}
+    </div>;
+};
+
+export default withStyles(styles, {withTheme: true})(App);
