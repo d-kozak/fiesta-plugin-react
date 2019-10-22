@@ -13,8 +13,10 @@ type UserInfoComponentProps = WithStyles<typeof styles> & {
 const UserInfoComponent = (props: UserInfoComponentProps) => {
     const {userInfo} = props;
     return <div>
-        Hello
-        {userInfo}
+        User info
+        <pre>
+        {JSON.stringify(userInfo, null, 2)}
+        </pre>
     </div>
 };
 
