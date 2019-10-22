@@ -27,9 +27,7 @@ const App = (props: WithStyles<typeof styles>) => {
             .then(response => {
                 const token = response.data["access_token"];
                 setToken(token);
-                console.log(token);
-                console.log(typeof token);
-                axios.get("https://fiesta.esncz.org/api/profile", {
+                axios.get("https://cors-anywhere.herokuapp.com/https://fiesta.esncz.org/api/profile", {
                     headers: {
                         'X-Auth-Token': token
                     }
