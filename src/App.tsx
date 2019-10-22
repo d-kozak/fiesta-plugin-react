@@ -32,7 +32,7 @@ const App = (props: WithStyles<typeof styles>) => {
                         'X-Auth-Token': token
                     }
                 }).then(response => {
-                    console.log(JSON.stringify(response, null, 2));
+                    setUserInfo(response.data);
                 }).catch(error => {
                     console.log(JSON.stringify(error, null, 2))
                 });
