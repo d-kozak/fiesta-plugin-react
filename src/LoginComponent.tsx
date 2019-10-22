@@ -16,13 +16,13 @@ const styles = (theme: Theme) => createStyles({
 });
 
 type LoginComponentProps = WithStyles<typeof styles> & {
-    handleLogin: (login: string, password: string) => void
+    handleLogin: (email: string, password: string) => void
 }
 
 const LoginComponent = (props: LoginComponentProps) => {
     const {classes, handleLogin} = props;
 
-    const [login, setLogin] = useState();
+    const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
     return <Paper className={classes.root}>
@@ -31,11 +31,12 @@ const LoginComponent = (props: LoginComponentProps) => {
             <Grid container direction="column">
                 <TextField
                     className={classes.formElem}
-                    label="Login"
-                    value={login}
-                    onChange={e => setLogin(e.target.value)}
+                    label="Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                 />
                 <TextField
+                    type="password"
                     className={classes.formElem}
                     label="Password"
                     value={password}
@@ -43,7 +44,7 @@ const LoginComponent = (props: LoginComponentProps) => {
                 />
                 <Button className={classes.formElem} type="submit" color="primary" variant="contained" onClick={(e) => {
                     e.preventDefault();
-                    handleLogin(login, password)
+                    handleLogin(email, password)
                 }}>Login</Button>
             </Grid>
         </form>

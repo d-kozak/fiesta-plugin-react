@@ -12,20 +12,31 @@ const styles = {
 };
 
 export interface UserInfo {
-
 }
 
 const App = (props: WithStyles<typeof styles>) => {
     const {classes} = props;
     const [userInfo, setUserInfo] = useState<UserInfo | null>();
+    const [token, setToken] = useState<string | null>();
 
-    const handleLogin = (login: string, password: string) => {
+    const handleLogin = (email: string, password: string) => {
         const formData = new FormData();
-        formData.set("username", login);
+        formData.set("email", email);
         formData.set("password", password);
         axios.post(`https://fiesta.esncz.org/api/auth`, formData, {withCredentials: false})
             .then(response => {
-                console.log(JSON.stringify(response, null, 2))
+                const token = response.data["access_token"];
+                setToken(token);
+                axios.get("https://fiesta.esncz.org/api/profile", {
+                    headers: {
+                        'X-Auth-Token': token
+                    }
+                }).then(response => {
+                    console.log(JSON.stringify(response, null, 2));
+                }).catch(error => {
+                    console.log(JSON.stringify(error, null, 2))
+                });
+
             }).catch(error => {
             console.log(JSON.stringify(error, null, 2))
         })
