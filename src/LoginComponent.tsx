@@ -16,11 +16,12 @@ const styles = (theme: Theme) => createStyles({
 });
 
 type LoginComponentProps = WithStyles<typeof styles> & {
-    handleLogin: (email: string, password: string) => void
+    handleLoginDirectly: (email: string, password: string) => void
+    handleLoginUsingCustomBackend: (email: string, password: string) => void
 }
 
 const LoginComponent = (props: LoginComponentProps) => {
-    const {classes, handleLogin} = props;
+    const {classes, handleLoginDirectly, handleLoginUsingCustomBackend} = props;
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -44,8 +45,12 @@ const LoginComponent = (props: LoginComponentProps) => {
                 />
                 <Button className={classes.formElem} type="submit" color="primary" variant="contained" onClick={(e) => {
                     e.preventDefault();
-                    handleLogin(email, password)
-                }}>Login</Button>
+                    handleLoginDirectly(email, password)
+                }}>Login directly</Button>
+                <Button className={classes.formElem} color="secondary" variant="contained" onClick={(e) => {
+                    e.preventDefault();
+                    handleLoginUsingCustomBackend(email, password)
+                }}>Login through custom backend</Button>
             </Grid>
         </form>
     </Paper>
