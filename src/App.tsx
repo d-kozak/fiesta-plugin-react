@@ -24,7 +24,8 @@ export interface UserInfo {
 }
 
 
-const handleLoginUsingCustomBackend = (email: string, password: string, setToken: (token: string | null) => void, setUserInfo: (userInfo: UserInfo) => void) => {
+const handleLoginUsingCustomBackend = (email: string, password: string, setToken: (token: string | null) => void, setUserInfo: (userInfo: UserInfo) => void, setShowProgress: (progress: boolean) => void) => {
+    setShowProgress(true);
     const formData = new FormData();
     formData.set("email", email);
     formData.set("password", password);
@@ -32,15 +33,19 @@ const handleLoginUsingCustomBackend = (email: string, password: string, setToken
         .then(response => {
             const userData = response.data;
             console.log(JSON.stringify(userData));
-            setUserInfo(userData)
+            setUserInfo(userData);
         })
         .catch(error => {
             console.log(JSON.stringify(error, null, 2))
-        });
+
+        }).finally(() => {
+        setShowProgress(false);
+    });
 
 };
 
-const handleLoginDirectly = (email: string, password: string, setToken: (token: string | null) => void, setUserInfo: (userInfo: UserInfo) => void) => {
+const handleLoginDirectly = (email: string, password: string, setToken: (token: string | null) => void, setUserInfo: (userInfo: UserInfo) => void, setShowProgress: (progress: boolean) => void) => {
+    setShowProgress(true);
     const formData = new FormData();
     formData.set("email", email);
     formData.set("password", password);
@@ -56,15 +61,16 @@ const handleLoginDirectly = (email: string, password: string, setToken: (token: 
                 setUserInfo(response.data);
             }).catch(error => {
                 console.log(JSON.stringify(error, null, 2))
-            });
+            }).finally(() => setShowProgress(false));
 
         }).catch(error => {
         console.log(JSON.stringify(error, null, 2))
-    })
+    }).finally(() => setShowProgress(false))
 };
 
 const App = (props: WithStyles<typeof styles>) => {
     const {classes} = props;
+    const [showProgress, setShowProgress] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<UserInfo | null>();
     const [token, setToken] = useState<string | null>();
 
@@ -72,8 +78,9 @@ const App = (props: WithStyles<typeof styles>) => {
     return <Container className={classes.root}>
         <CssBaseline/>
         {userInfo ? <UserInfoComponent logout={() => setUserInfo(null)} userInfo={userInfo}/> : <LoginComponent
-            handleLoginDirectly={(email, password) => handleLoginDirectly(email, password, setToken, setUserInfo)}
-            handleLoginUsingCustomBackend={(email, password) => handleLoginUsingCustomBackend(email, password, setToken, setUserInfo)}
+            showProgress={showProgress}
+            handleLoginDirectly={(email, password) => handleLoginDirectly(email, password, setToken, setUserInfo, setShowProgress)}
+            handleLoginUsingCustomBackend={(email, password) => handleLoginUsingCustomBackend(email, password, setToken, setUserInfo, setShowProgress)}
         />
         }
     </Container>;

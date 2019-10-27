@@ -1,6 +1,8 @@
 import {Button, createStyles, Grid, Paper, TextField, Theme, Typography, WithStyles} from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import React, {useState} from 'react';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -16,17 +18,19 @@ const styles = (theme: Theme) => createStyles({
 });
 
 type LoginComponentProps = WithStyles<typeof styles> & {
+    showProgress:boolean,
     handleLoginDirectly: (email: string, password: string) => void
     handleLoginUsingCustomBackend: (email: string, password: string) => void
 }
 
 const LoginComponent = (props: LoginComponentProps) => {
-    const {classes, handleLoginDirectly, handleLoginUsingCustomBackend} = props;
+    const {classes,showProgress, handleLoginDirectly, handleLoginUsingCustomBackend} = props;
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
     return <Paper className={classes.root}>
+        {showProgress && <LinearProgress/>}
         <Typography variant="h4">Fiesta React Plugin</Typography>
         <form>
             <Grid container direction="column">
